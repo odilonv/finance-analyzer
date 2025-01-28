@@ -1,7 +1,7 @@
 {
-  "name": "trella",
+  "name": "finance-analyzer",
   "version": "1.0.0",
-  "description": "Stop Trello, now start manage your cards with Trella !",
+  "description": "Analyze your finance right now!",
   "main": "server.js",
   "scripts": {
     "start": "node backend/Server.js",
@@ -12,7 +12,7 @@
     "install": "cd frontend && npm install && cd ../backend && npm install",
     "database": "node start-server.js"
   },
-  "author": "ESCLAPEZ Loïc, DIMECK Raphaël, SALAÜN Kerrian, VIDAL Odilon",
+  "author": "ESCLAPEZ Loïc, DIMECK Raphaël, VIDAL Odilon",
   "license": "MIT License",
   "dependencies": {
     "@emotion/react": "^11.11.4",
