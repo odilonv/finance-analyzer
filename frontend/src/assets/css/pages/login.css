@@ -1,0 +1,80 @@
+.App {
+    text-align: center;
+}
+
+html {
+    box-sizing: border-box;
+    outline: none;
+    overflow: auto;
+}
+
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+p {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    background-color: #fff;
+}
+
+.header {
+    align-items: center;
+    padding: 25px 0;
+    background-color: #208AEC;
+}
+
+
+.form-hint {
+    color: var(--black);
+    font-size: 16px;
+    text-align: center;
+}
+
+.login-container {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.radio-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.switch-label {
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.switch-control {
+    margin-left: auto;
+}
+
+.MuiSwitch-root {
+    width: 40px;
+    height: 24px;
+}
+
+.MuiSwitch-switchBase {
+    padding: 0;
+}
+
+.MuiSwitch-thumb {
+    width: 20px;
+    height: 20px;
+}
+
+.MuiSwitch-track {
+    border-radius: 12px;
+}
