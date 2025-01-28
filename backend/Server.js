@@ -14,15 +14,9 @@ app.use(cors({
 
 app.use(express.json());
 
-
-// Importez d'autres routes principales si nécessaire
 import { startUsersService } from './services/users/index.js';
-import { startBoardsService } from './services/boards/index.js'; // Exemple si vous avez un service boards
-import { startCardsService } from './services/cards/index.js';
 
 startUsersService();
-startBoardsService(); // Démarrez le service des tableaux si nécessaire
-startCardsService(); // Démarrez le service des cartes si nécessaire
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

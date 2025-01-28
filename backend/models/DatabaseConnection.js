@@ -37,7 +37,7 @@ class DatabaseConnection {
                 host: 'localhost',
                 user: 'admin',
                 password: 'admin',
-                database: 'trella_db',
+                database: 'finance_analyzer_db',
             });
 
             // await this.dropTables(connection);

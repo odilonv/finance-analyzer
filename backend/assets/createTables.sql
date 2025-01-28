@@ -6,23 +6,10 @@ CREATE TABLE IF NOT EXISTS `user` (
     password VARCHAR (255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `board` (
+CREATE TABLE IF NOT EXISTS `wallet` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
     user_id INT,
-    FOREIGN KEY (user_id) REFERENCES user(id)
-);
 
-CREATE TABLE IF NOT EXISTS `card` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    board_id INT,
-    user_id INT,
-    state INT DEFAULT 1,
-    FOREIGN KEY (board_id) REFERENCES board(id),
-    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 CREATE TABLE IF NOT EXISTS `user_validation` (
