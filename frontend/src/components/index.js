@@ -18,6 +18,9 @@ export { default as PasswordCreationComponent } from './Input/PasswordCreationCo
 export { default as UserInfoComponent } from './User/UserInfoComponent';
 export { default as UserInfoEntryComponent } from './User/UserInfoEntryComponent';
 
+export { default as StockChart } from './Stocks/StockChart';
+export { default as StockLine } from './Stocks/StockLine';
+
 
 
 

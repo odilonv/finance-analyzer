@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Line } from "react-chartjs-2";
+import { StockChart } from "../../components";
 import { Button, MenuItem, Select, FormControl, InputLabel, Card, CardContent, Grid, Typography, Box } from "@mui/material";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const SymbolDetailPage = () => {
     const { symbol } = useParams();
     const [data, setData] = useState(null);
-    const [history, setHistory] = useState(null);
 
     const today = new Date().toISOString().split("T")[0];
     const yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0];
@@ -22,8 +18,6 @@ const SymbolDetailPage = () => {
     const [interval, setInterval] = useState("1day");
     const [startDate, setStartDate] = useState(yesterday);
     const [endDate, setEndDate] = useState(today);
-    const [percentChange, setPercentChange] = useState(null);
-    const [color, setColor] = useState("black");
 
     useEffect(() => {
         if (!symbol) return;
@@ -35,8 +29,6 @@ const SymbolDetailPage = () => {
                     throw new Error(`API call failed with status ${response.status}`);
                 }
                 const data = await response.json();
-                console.log("data:", data);
-
                 setData(data);
             } catch (error) {
                 console.error("Error fetching stock data:", error);
@@ -45,48 +37,6 @@ const SymbolDetailPage = () => {
 
         fetchData();
     }, [symbol]);
-
-    useEffect(() => {
-        if (!symbol) return;
-
-        const fetchHistory = async () => {
-            let intervalData = interval;
-
-            if (interval === "1day") intervalData = "30min";
-            else if (interval === "5day") intervalData = "4h";
-            else if (interval === "1month") intervalData = "1day";
-            else if (interval === "6month") intervalData = "1day";
-            else if (interval === "1year") intervalData = "1week";
-            else if (interval === "5year") intervalData = "1month";
-
-            try {
-                const response = await fetch(
-                    `http://localhost:5000/stocks/${symbol}/history?interval=${intervalData}&start_date=${startDate}&end_date=${endDate}`
-                );
-                if (!response.ok) {
-                    throw new Error(`API call failed with status ${response.status}`);
-                }
-                const historyData = await response.json();
-                /* trier les données par date */
-                historyData.values = historyData.values.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-                console.log("historyData:", historyData);
-
-                setHistory(historyData);
-
-                if (historyData.values.length > 0) {
-                    const firstValue = historyData.values[0].close;
-                    const lastValue = historyData.values[historyData.values.length - 1].close;
-                    const change = ((lastValue - firstValue) / firstValue) * 100;
-                    setPercentChange(change);
-                    setColor(change >= 0 ? "green" : "red");
-                }
-            } catch (error) {
-                console.error("Error fetching stock history:", error);
-            }
-        };
-
-        fetchHistory();
-    }, [symbol, interval]);
 
     const handleIntervalChange = (event) => {
         setInterval(event.target.value);
@@ -121,21 +71,8 @@ const SymbolDetailPage = () => {
         }
     };
 
-    const chartData = {
-        labels: history?.values?.map(item => item.datetime) || [],
-        datasets: [
-            {
-                label: `${symbol} Stock Price`,
-                data: history?.values?.map(item => item.close) || [],
-                borderColor: "rgb(75, 192, 192)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                fill: true,
-            },
-        ],
-    };
-
     return (
-        <Box sx={{ padding: "20px", backgroundColor: "#f4f4f9", minHeight: "100vh" }}>
+        <Box sx={{ padding: "20px", backgroundColor: "#f4f4f9" }}>
             {data && data.code === 429 ? (
                 <Typography variant="h6" align="center">API rate limit exceeded. Please try again later.</Typography>
             ) : data ? (
@@ -246,24 +183,15 @@ const SymbolDetailPage = () => {
                                 </div>
                             </CardContent>
                         </Card>
-
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card variant="outlined" sx={{
-                            backgroundColor: "#fff", borderRadius: "10px", padding: 3,
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                        }}>
+                        <Card variant="outlined">
                             <CardContent>
                                 <Typography variant="h6" gutterBottom align="center">
                                     Stock Price History
                                 </Typography>
-
-                                <Box sx={{
-                                    display: "flex", justifyContent: "center", marginBottom: "20px",
-                                    alignItems: "center",
-                                    // gap: "8%"
-                                }}>
+                                <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                                     <FormControl sx={{ minWidth: 120 }}>
                                         <InputLabel>Interval</InputLabel>
                                         <Select value={interval} onChange={handleIntervalChange} label="Interval">
@@ -275,29 +203,16 @@ const SymbolDetailPage = () => {
                                             <MenuItem value="5year">5 Years</MenuItem>
                                         </Select>
                                     </FormControl>
-                                    {percentChange !== null && (
-                                        <Typography
-
-                                            variant="h5"
-                                            sx={{
-                                                marginLeft: "10px",
-                                                color: color,
-                                                fontWeight: "bold",
-                                            }}
-                                        >
-                                            {percentChange.toFixed(2)}%
-                                        </Typography>
-                                    )}
                                 </Box>
-
-                                {history && history.values ? (
-                                    <Line data={chartData} options={{ responsive: true }} />
-                                ) : (
-                                    <Typography variant="body1" align="center">Loading chart data...</Typography>
-                                )}
+                                <StockChart
+                                    displayXLegend={true}
+                                    symbol={symbol}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    interval={interval}
+                                />
                             </CardContent>
                         </Card>
-
                     </Grid>
                 </Grid>
             ) : (

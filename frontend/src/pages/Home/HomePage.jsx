@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
+import { StockChart, StockLine } from '../../components';
+import { height } from '@mui/system';
 
 function HomePage() {
     const { user } = useContext(UserContext);
@@ -14,8 +16,12 @@ function HomePage() {
                         <DashboardCard title="Market News" link="/news">
                             {/* Ajouter le component ici */}
                         </DashboardCard>
-                        <DashboardCard title="Stocks" link="/stocks">
-                            {/* Ajouter le component ici */}
+                        <DashboardCard title="Stocks" link="/stocks" autoScroll>
+                            <StockLine symbol={"AAPL"} symbolName={"Apple Inc."} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
+                            <StockLine symbol={"MSFT"} symbolName={"Microsoft Corporation"} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
+                            <StockLine symbol={"AMZN"} symbolName={"Amazon.com Inc."} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
+                            <StockLine symbol={"TSLA"} symbolName={"Tesla Inc."} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
+                            <StockLine symbol={"NVDA"} symbolName={"NVIDIA Corporation"} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
                         </DashboardCard>
                     </div>
                     <DashboardCard title="Wallet" link="/wallet" style={rightCardStyle}>
@@ -40,8 +46,77 @@ function HomePage() {
                     <DashboardCard title="Market News" link="/news">
                         {/* Ajouter le component ici */}
                     </DashboardCard>
-                    <DashboardCard title="Stocks" link="/stocks">
-                        {/* Ajouter le component ici */}
+                    <DashboardCard title="Stocks" link="/stocks" autoScroll>
+                        <StockLine
+                            symbol={"AAPL"}
+                            symbolName={"Apple Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"MSFT"}
+                            symbolName={"Microsoft Corporation"}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"AMZN"}
+                            symbolName={"Amazon.com Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"TSLA"}
+                            symbolName={"Tesla Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"NVDA"}
+                            symbolName={"NVIDIA Corporation"}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"META"}
+                            symbolName={"Meta Platforms Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"BRK.B"}
+                            symbolName={"Berkshire Hathaway Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"V"}
+                            symbolName={"Visa Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"JNJ"}
+                            symbolName={"Johnson & Johnson"}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
+                        <StockLine
+                            symbol={"WMT"}
+                            symbolName={"Walmart Inc."}
+                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
+                            endDate={new Date().toISOString().split("T")[0]}
+                            interval={"15min"}
+                        />
                     </DashboardCard>
                 </div>
             </div>
@@ -49,15 +124,55 @@ function HomePage() {
     );
 }
 
-const DashboardCard = ({ title, link, style, children }) => (
+const AutoScrollContainer = ({ children }) => {
+    const scrollRef = useRef(null);
+
+    useEffect(() => {
+        const scrollContainer = scrollRef.current;
+        let scrollAmount = 0;
+
+        const scroll = () => {
+            if (!scrollContainer) return;
+            scrollAmount += 1; // Pixels à faire défiler à chaque tick
+            if (scrollAmount >= scrollContainer.scrollWidth / 2) {
+                scrollAmount = 0; // Revenir au début pour un effet boucle
+                scrollContainer.scrollLeft = 0;
+            } else {
+                scrollContainer.scrollLeft += 1;
+            }
+        };
+
+        const interval = setInterval(scroll, 10); // Vitesse du défilement (50ms)
+        return () => clearInterval(interval); // Nettoyer l'intervalle lors du démontage
+    }, []);
+
+    return (
+        <div ref={scrollRef} style={scrollContainerStyle}>
+            {children}
+        </div>
+    );
+};
+
+const DashboardCard = ({ title, link, style, children, autoScroll }) => (
     <div style={{ ...cardStyle, ...style }}>
         <h3 style={titleStyle}>{title}</h3>
-        <div style={contentStyle}>{children}</div>
+        {autoScroll ? <AutoScrollContainer>{children}</AutoScrollContainer> : <div style={contentStyle}>{children}</div>}
         <Link to={link} style={arrowStyle}>
             <ArrowForwardIosRoundedIcon fontSize="small" />
         </Link>
     </div>
 );
+
+const scrollContainerStyle = {
+    display: "flex",
+    overflowX: "auto",
+    gap: "16px",
+    padding: "10px",
+    scrollbarWidth: "none",
+    msOverflowStyle: "none",
+    whiteSpace: "nowrap",
+    height: "100%",
+};
 
 const dashboardStyle = {
     display: 'flex',
