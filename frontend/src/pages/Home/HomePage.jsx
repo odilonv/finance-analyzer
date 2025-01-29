@@ -27,12 +27,24 @@ function HomePage() {
     }
 
     return (
-        <div style={{ margin: "15px", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <h1>Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span>!</h1>
-            <p>Log in to access your personalized dashboard and start managing your stock portfolio today.</p>
-            <Link to="/login" style={loginButtonStyle}>
-                Log In to Get Started <ArrowForwardIosRoundedIcon />
-            </Link>
+        <div style={{ margin: "15px" }}>
+            <div style={dashboardStyle}>
+                <div style={{ ...cardStyle, justifyContent: 'center', alignItems: 'start', height: '620px', paddingLeft: '50px' }}>
+                    <h1>Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span> !</h1>
+                    <p>Log in to access your personalized dashboard<br />and start managing your stock portfolio today.</p>
+                    <Link to="/login" style={loginButtonStyle}>
+                        Log In to Get Started <ArrowForwardIosRoundedIcon />
+                    </Link>
+                </div>
+                <div style={rightColumnStyle}>
+                    <DashboardCard title="Market News" link="/news">
+                        {/* Ajouter le component ici */}
+                    </DashboardCard>
+                    <DashboardCard title="Stocks" link="/stocks">
+                        {/* Ajouter le component ici */}
+                    </DashboardCard>
+                </div>
+            </div>
         </div>
     );
 }
@@ -51,7 +63,7 @@ const dashboardStyle = {
     display: 'flex',
     gap: '20px',
     marginTop: '10px',
-    margin: '25px 50px 0 50px',
+    margin: '10px 10px 0 50px',
     alignItems: 'stretch'
 };
 
@@ -60,6 +72,13 @@ const leftColumnStyle = {
     flexDirection: 'column',
     gap: '20px',
     width: '40%'
+};
+
+const rightColumnStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    width: '60%'
 };
 
 const rightCardStyle = {
