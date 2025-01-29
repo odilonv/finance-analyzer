@@ -15,7 +15,6 @@ newsRouter.get('/', async (req, res) => {
   // Liste des tickers d'actions pour lesquelles tu veux récupérer les news
   const tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'];
 
-  // Joindre les tickers par des virgules pour envoyer dans l'URL
   const tickerQuery = tickers.join(',');
 
   try {
