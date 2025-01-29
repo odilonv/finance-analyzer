@@ -93,29 +93,8 @@ function HomePage() {
                             interval={"15min"}
                         />
                         <StockLine
-                            symbol={"BRK.B"}
-                            symbolName={"Berkshire Hathaway Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
                             symbol={"V"}
                             symbolName={"Visa Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"JNJ"}
-                            symbolName={"Johnson & Johnson"}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"WMT"}
-                            symbolName={"Walmart Inc."}
                             startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
                             endDate={new Date().toISOString().split("T")[0]}
                             interval={"15min"}
@@ -145,8 +124,8 @@ const AutoScrollContainer = ({ children }) => {
             }
         };
 
-        const interval = setInterval(scroll, 10); // Vitesse du défilement (50ms)
-        return () => clearInterval(interval); // Nettoyer l'intervalle lors du démontage
+        // const interval = setInterval(scroll, 10); // Vitesse du défilement (50ms)
+        // return () => clearInterval(interval); // Nettoyer l'intervalle lors du démontage
     }, []);
 
     return (
