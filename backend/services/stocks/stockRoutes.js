@@ -41,10 +41,11 @@ stockRouter.get('/:symbol', async (req, res) => {
 
 stockRouter.get('/:symbol/history', async (req, res) => {
     const symbol = req.params.symbol;
+    const interval = req.query.interval || '1day';
     try {
         console.log(`Fetching stock history for symbol ${symbol}...`);
         
-        const response = await fetch(`https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&apikey=${API_KEY}`);
+        const response = await fetch(`https://api.twelvedata.com/time_series?symbol=${symbol}&interval=${interval}&apikey=${API_KEY}`);
         if (!response.ok) {
             throw new Error(`API call failed with status ${response.status}`);
         }
