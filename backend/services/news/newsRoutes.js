@@ -1,14 +1,17 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.resolve('./backend/.env') });
 
-export const stockRouter = express.Router();
+export const newsRouter = express.Router();
 
 const YAHOO_API_KEY = process.env.YAHOO_API_KEY;
+console.log("API_KEY dans newsRoute:", YAHOO_API_KEY);
 
-stockRouter.get('/news', async (req, res) => {
+
+newsRouter.get('/', async (req, res) => {
   // Liste des tickers d'actions pour lesquelles tu veux récupérer les news
   const tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'];
 
@@ -16,8 +19,7 @@ stockRouter.get('/news', async (req, res) => {
   const tickerQuery = tickers.join(',');
 
   try {
-    const url = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/stock/quotes?ticker=${tickerQuery}`;
-
+    const url = 'https://yahoo-finance15.p.rapidapi.com/api/v2/markets/news?tickers=AAPL&type=ALL';
     const options = {
       method: 'GET',
       headers: {
@@ -46,7 +48,7 @@ stockRouter.get('/news', async (req, res) => {
 
 
 // Route pour récupérer les news d'une action spécifique
-stockRouter.get('/news/:symbol', async (req, res) => {
+newsRouter.get('/:symbol', async (req, res) => {
   const { symbol } = req.params;
 
   try {
