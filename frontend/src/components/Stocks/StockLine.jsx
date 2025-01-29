@@ -26,7 +26,7 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
                 const response = await fetch(
                     `http://localhost:5000/stocks/${symbol}/history?interval=${intervalData}&start_date=${startDate}&end_date=${endDate}`
                 );
-                
+
                 const historyData = await response.json();
 
                 if (historyData.code === 429) {
@@ -61,7 +61,7 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
     return (
         <Box sx={{ padding: "15px", backgroundColor: "#f5f5f5", borderRadius: "8px", boxShadow: 2, minWidth: "200px" }}>
             <Box sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
                     <Typography variant="h10" sx={{
                         fontWeight: "bold", color: "#333", marginRight: 1,
                         wordWrap: "break-word",
@@ -72,9 +72,7 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
                     <Typography variant="h20" sx={{
                         color: "#4a4a4a", wordWrap: "break-word",
                         overflowWrap: "break-word", whiteSpace: "normal",
-                    }}>
-                        {companyName}
-                    </Typography>
+                    }}>{companyName}</Typography>
                 </div>
 
                 <div>

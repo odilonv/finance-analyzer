@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
@@ -7,6 +8,42 @@ import { height } from '@mui/system';
 
 function HomePage() {
     const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const renderStockLine = () => {
+        const stocks = [
+            { symbol: "AAPL", symbolName: "Apple Inc." },
+            { symbol: "MSFT", symbolName: "Microsoft Corporation" },
+            { symbol: "AMZN", symbolName: "Amazon.com Inc." },
+            { symbol: "TSLA", symbolName: "Tesla Inc." },
+            { symbol: "NVDA", symbolName: "NVIDIA Corporation" },
+            { symbol: "META", symbolName: "Meta Platforms Inc." },
+            { symbol: "V", symbolName: "Visa Inc." },
+        ];
+
+        const startDate = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0];
+        const endDate = new Date().toISOString().split("T")[0];
+
+        return (
+            <DashboardCard title="Stocks" link="/stocks" autoScroll>
+
+                {stocks.map((stock) => (
+                    <StockLine
+                        key={stock.symbol}
+                        symbol={stock.symbol}
+                        symbolName={stock.symbolName}
+                        startDate={startDate}
+                        endDate={endDate}
+                        interval={"15min"}
+                        onClick={() => {
+                            navigate(`/stocks/${stock.symbol}`);
+                        }}
+                    />
+                ))
+                }
+            </DashboardCard>
+        );
+    }
 
     if (user) {
         return (
@@ -16,13 +53,7 @@ function HomePage() {
                         <DashboardCard title="Market News" link="/news">
                             {/* Ajouter le component ici */}
                         </DashboardCard>
-                        <DashboardCard title="Stocks" link="/stocks" autoScroll>
-                            <StockLine symbol={"AAPL"} symbolName={"Apple Inc."} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
-                            <StockLine symbol={"MSFT"} symbolName={"Microsoft Corporation"} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
-                            <StockLine symbol={"AMZN"} symbolName={"Amazon.com Inc."} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
-                            <StockLine symbol={"TSLA"} symbolName={"Tesla Inc."} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
-                            <StockLine symbol={"NVDA"} symbolName={"NVIDIA Corporation"} startDate={"2024-01-28"} endDate={"2024-01-29"} interval={"15min"} />
-                        </DashboardCard>
+                        {renderStockLine()}
                     </div>
                     <DashboardCard title="Wallet" link="/wallet" style={rightCardStyle}>
                         {/* Ajouter le component ici */}
@@ -31,6 +62,7 @@ function HomePage() {
             </div>
         );
     }
+
 
     return (
         <div style={{ margin: "15px" }}>
@@ -49,57 +81,7 @@ function HomePage() {
                     <DashboardCard title="Market News" link="/news">
                         {/* Ajouter le component ici */}
                     </DashboardCard>
-                    <DashboardCard title="Stocks" link="/stocks" autoScroll>
-                        <StockLine
-                            symbol={"AAPL"}
-                            symbolName={"Apple Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"MSFT"}
-                            symbolName={"Microsoft Corporation"}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"AMZN"}
-                            symbolName={"Amazon.com Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"TSLA"}
-                            symbolName={"Tesla Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"NVDA"}
-                            symbolName={"NVIDIA Corporation"}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"META"}
-                            symbolName={"Meta Platforms Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                        <StockLine
-                            symbol={"V"}
-                            symbolName={"Visa Inc."}
-                            startDate={new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0]}
-                            endDate={new Date().toISOString().split("T")[0]}
-                            interval={"15min"}
-                        />
-                    </DashboardCard>
+                    {renderStockLine()}
                 </div>
             </div>
         </div>
