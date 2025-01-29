@@ -42,12 +42,11 @@ To install Finance Analyzer, follow these steps:
 
 To run the application in development mode, execute the following command:
 
-  > **Note for Windows users**: Before running `npm run dev`, make sure Docker Desktop is running on your machine.
+  > **Note for Windows or Mac users**: Before running `npm run dev`, make sure `Docker Desktop` is running on your machine.
 
 
-    ```
     npm run dev
-    ```
+
 
 This will start the backend server and launch the frontend.
 
@@ -57,9 +56,7 @@ This will start the backend server and launch the frontend.
 
 The current version of the application includes tests that can be run using the following command:
 
-    ```
     npm test
-    ```
 
 Ensure your environment is set up correctly before running the tests to verify the functionality of the application.
 
