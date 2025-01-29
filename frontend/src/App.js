@@ -11,8 +11,8 @@ import {
   UserPage,
   StockPage,
   SymbolDetailPage,
-  WalletPage,
-  NewsPage
+  NewsPage,
+  WalletPage
 } from './pages';
 import { NotificationProvider, UserProvider } from './contexts';
 
@@ -22,20 +22,25 @@ function App() {
       <UserProvider>
         <HeaderComponent />
         <NotificationProvider>
-          <Routes>
-            <Route exact path="/" element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/stocks" element={<StockPage />} />
-            <Route path="/stocks/:symbol" element={<SymbolDetailPage />} />
-            <Route path="/logout" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signUp" element={<SignUpPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/user" element={<UserPage />} />
-            <Route path="/wallet" element={<WalletPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <div className="App">
+            <div className="main-content">
+              <Routes>
+                <Route exact path="/" element={<HomePage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/news" element={<NewsPage />} />
+                <Route path="/stocks" element={<StockPage />} />
+                <Route path="/stocks/:symbol" element={<SymbolDetailPage />} />
+                <Route path="/logout" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signUp" element={<SignUpPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/user" element={<UserPage />} />
+                <Route path="/wallet" element={<WalletPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </div>
+            <FooterComponent />
+          </div>
         </NotificationProvider>
       </UserProvider>
     </Router>
