@@ -1,0 +1,83 @@
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+}
+
+.ticker-id {
+    text-align: center;
+    width: 20%;
+}
+
+.ticker-header{
+    font-weight: bold;
+}
+
+.amount {
+    text-align: center;
+    width: 20%;
+}
+
+.buy-price {
+    text-align: center;
+    width: 20%;
+    margin-right: 5%;
+}
+
+.icon {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 10%;
+    text-wrap: nowrap;
+}
+
+#transaction-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+}
+
+#transactions-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cardStyle {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+#transaction-form {
+    display: flex;
+    flex-direction: line;
+    width: 100%;
+    padding: 0px 10px 20px 10px;
+    justify-content: space-between;
+}
+
+.transaction-input {
+    border-radius: 5px; 
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    width: 80%;
+}
+
+.transaction-input-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -6,6 +6,7 @@
 @import 'pages/KeyFrames.css';
 @import 'pages/ErrorPages.css';
 @import './Notification.css';
+@import 'pages/transactions.css';
 
 
 :root {

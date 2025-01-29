@@ -12,7 +12,6 @@ class DatabaseConnection {
         }
 
         if (DatabaseConnection.#initializing) {
-            // Wait until the initializing process is finished
             await new Promise((resolve) => {
                 const interval = setInterval(() => {
                     if (DatabaseConnection.#instance) {
@@ -40,8 +39,8 @@ class DatabaseConnection {
                 database: 'finance_analyzer_db',
             });
 
-            await this.dropTables(connection);
-            await this.createTables(connection);
+            // await this.dropTables(connection);
+            // await this.createTables(connection);
 
             return connection;
         } catch (err) {
