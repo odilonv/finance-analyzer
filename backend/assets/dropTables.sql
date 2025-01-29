@@ -1,5 +1,3 @@
 DROP TABLE IF EXISTS `wallet`;
-
-DROP TABLE IF EXISTS `user_validation`;
-
 DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `transaction`;

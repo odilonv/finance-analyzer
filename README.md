@@ -1,8 +1,17 @@
-# Trella
+# Finance Analyzer
 
-## Version: 1.0.0
+Finance Analyzer is a powerful and user-friendly application designed to simplify the management of stock data and portfolios. Whether you're an experienced investor or a beginner, this tool offers essential features to help you stay informed and manage your investments effectively.
 
-Trella is a microservice architecture application designed to function similarly to Trello. It offers project management capabilities where users can create boards, lists, and cards to organize cards and workflows efficiently.
+## Features
+
+1. **Stock Data Visualization**  
+   View comprehensive data for a wide range of stocks, including key metrics, performance charts, and other relevant information.
+
+2. **Company News Integration**  
+   Click on a stock to instantly access the latest news and updates about the associated company. Stay informed about critical events and announcements that may impact your investments.
+
+3. **Personal Stock Portfolio Management**  
+   Create and manage your own stock portfolio. Keep track of your holdings and monitor your investments' performance over time.
 
 ---
 
@@ -10,20 +19,13 @@ Trella is a microservice architecture application designed to function similarly
 
 - ESCLAPEZ Loïc
 - DIMECK Raphaël
-- SALAÜN Kerrian
 - VIDAL Odilon
-
----
-
-### Architecture
-
-![Trella Architecture](docs/Trella%20Architecture%20Diagram.svg)
 
 ---
 
 ### Installation
 
-To install Trella, follow these steps:
+To install Finance Analyzer, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Navigate to the cloned directory.
@@ -37,7 +39,7 @@ To install Trella, follow these steps:
 
 ### Installation de la base de données
 
-To install and configure the database for Trella, follow these steps:
+To install and configure the database for Finance Analyzer, follow these steps:
 
 1. Start the Docker containers:
 
@@ -46,13 +48,13 @@ To install and configure the database for Trella, follow these steps:
     ```
 
 2. Configure the database connection:
-    - Name : `Trella_db@localhost`
+    - Name : `finance-analyzer`
     - Host : `localhost`
     - Port : `3306`
     - User : `admin`
     - Password : `admin`
-    - Database : `trella_db`
-    - URL : `jdbc:mysql://localhost:3307/Trella_db`
+    - Database : `finance_analyzer_db`
+    - URL : `jdbc:mysql://localhost:3307/finance_analyzer_db`
 
 ---
 

@@ -6,15 +6,11 @@ CREATE TABLE IF NOT EXISTS `user` (
     password VARCHAR (255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `wallet` (
+CREATE TABLE IF NOT EXISTS `transaction` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT
-
-);
-
-CREATE TABLE IF NOT EXISTS `user_validation` (
     user_id INT,
-    email_token VARCHAR(255),
-    validated BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    ticker_id VARCHAR (255) NOT NULL,
+    amount FLOAT NOT NULL,
+    buy_price FLOAT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES `user`(id),
 );
