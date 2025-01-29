@@ -12,7 +12,7 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
     useEffect(() => {
         if (!symbol) return;
 
-        const fetchHistory = async () => {
+        const fetchHistory = async (retryDelay = 4000) => {
             let intervalData = interval;
 
             if (interval === "1day") intervalData = "30min";
@@ -26,11 +26,17 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
                 const response = await fetch(
                     `http://localhost:5000/stocks/${symbol}/history?interval=${intervalData}&start_date=${startDate}&end_date=${endDate}`
                 );
-                if (!response.ok) {
-                    throw new Error(`API call failed with status ${response.status}`);
+                
+                const historyData = await response.json();
+
+                if (historyData.code === 429) {
+                    // Attendre entre 4 et 20 secondes avant de réessayer
+                    const delay = Math.floor(Math.random() * (15000 - 4000 + 1)) + 4000;
+                    console.warn(`Trop de requêtes. Nouvelle tentative dans ${delay / 1000} secondes...`);
+                    setTimeout(() => fetchHistory(), delay);
+                    return;
                 }
 
-                const historyData = await response.json();
                 historyData.values = historyData.values.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
 
                 setHistory(historyData);
@@ -53,14 +59,21 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
     }, [symbol, startDate, endDate, interval]);
 
     return (
-        <Box sx={{ padding: "20px", backgroundColor: "#f5f5f5", borderRadius: "8px", boxShadow: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                    <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333", marginRight: 1 }}>
-                        {symbol} {companyName}
+        <Box sx={{ padding: "15px", backgroundColor: "#f5f5f5", borderRadius: "8px", boxShadow: 2, minWidth: "200px" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    <Typography variant="h10" sx={{
+                        fontWeight: "bold", color: "#333", marginRight: 1,
+                        wordWrap: "break-word",
+                        overflowWrap: "break-word", whiteSpace: "normal",
+                    }}>
+                        {symbol}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: "#777", fontStyle: "italic" }}>
-                        {companyName} Stock
+                    <Typography variant="h20" sx={{
+                        color: "#4a4a4a", wordWrap: "break-word",
+                        overflowWrap: "break-word", whiteSpace: "normal",
+                    }}>
+                        {companyName}
                     </Typography>
                 </div>
 
@@ -73,7 +86,7 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
                                 fontWeight: "bold",
                             }}
                         >
-                            {lastPrice}€
+                            {lastPrice} €
                         </Typography>
                     ) : (
                         <Typography variant="h5" sx={{ color: "#aaa" }}>
@@ -99,26 +112,9 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
                         </Typography>
                     )}
                 </div>
-            </Box>
+            </Box >
 
-            <Divider sx={{ marginY: 0.5 }} />
-
-            {/* Section date améliorée */}
-            <Box sx={{ textAlign: "center" }}>
-                <Typography variant="body2" sx={{ color: "#555", fontSize: "14px", display: "inline-block", marginRight: "5px" }}>
-                    From:
-                </Typography>
-                <Typography variant="body2" sx={{ color: "#333", fontSize: "14px", display: "inline-block", fontWeight: "bold" }}>
-                    {startDate}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "#555", fontSize: "14px", display: "inline-block", marginLeft: "10px", marginRight: "5px" }}>
-                    To:
-                </Typography>
-                <Typography variant="body2" sx={{ color: "#333", fontSize: "14px", display: "inline-block", fontWeight: "bold" }}>
-                    {endDate}
-                </Typography>
-            </Box>
-        </Box>
+        </Box >
     );
 };
 
