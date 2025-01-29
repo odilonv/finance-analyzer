@@ -18,11 +18,14 @@ app.use(cors({
 app.use(express.json());
 
 import { startUsersService } from './services/users/index.js';
+import { startTransactionsService } from './services/transactions/index.js';
 import { stockRouter } from './services/stocks/stockRoutes.js';
 
 app.use('/stocks', stockRouter);
 
+
 startUsersService();
+startTransactionsService();
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
