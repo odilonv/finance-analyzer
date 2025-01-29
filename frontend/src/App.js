@@ -10,12 +10,9 @@ import {
   SignUpPage,
   UserPage,
   VerifyEmailPage,
-  BoardPage,
-  BoardListPage,
-  BoardCreationPage,
-  CardCreationPage,
   StockPage,
-  SymbolDetailPage 
+  SymbolDetailPage,
+  WalletPage
 } from './pages';
 import { NotificationProvider, UserProvider } from './contexts';
 
@@ -30,16 +27,13 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/stocks" element={<StockPage />} />
             <Route path="/stocks/:symbol" element={<SymbolDetailPage />} />
-            <Route path="/boards/:id" element={<BoardPage />} />
-            <Route path="/boards/create" element={<BoardCreationPage />} />
-            <Route path="/boards" element={<BoardListPage />} />
-            <Route path="/cards/create/:boardId" element={<CardCreationPage />} />
             <Route path="/logout" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/verifyEmail/:token" element={<VerifyEmailPage />} />
             <Route path="/signUp" element={<SignUpPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/user" element={<UserPage />} />
+            <Route path="/wallet" element={<WalletPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </NotificationProvider>

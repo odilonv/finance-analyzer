@@ -2,13 +2,16 @@ import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { ButtonComponent, InputComponent } from '../../components';
+import { ButtonComponent, InputComponent, TransactionComponent } from '../../components';
+import { useNavigate } from 'react-router';
 import { useNotification } from '../../contexts/NotificationContext';
 import { createTransaction, getTransactionsByUserId } from "../../services/API/ApiTransactions.js";
 
 function WalletPage() {
     const { triggerNotification } = useNotification();
     const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+    
     
     const [newTransaction, setNewTransaction] = useState({
         ticker_id: '',
@@ -18,7 +21,6 @@ function WalletPage() {
 
     const [transactions, setTransactions] = useState([]);
 
-    // 🔹 Récupération des transactions de l'utilisateur
     useEffect(() => {
         if (user) {
             fetchTransactions();
@@ -52,21 +54,13 @@ function WalletPage() {
     };
 
     if (!user) {
-        return (
-            <div style={centeredContainerStyle}>
-                <h1>Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span>!</h1>
-                <p>Log in to access your personalized dashboard and start managing your stock portfolio today.</p>
-                <Link to="/login" style={loginButtonStyle}>
-                    Log In to Get Started <ArrowForwardIosRoundedIcon />
-                </Link>
-            </div>
-        );
+        navigate('/login');
     }
 
     return (
         <div style={{ margin: "15px" }}>
-            <div style={dashboardStyle}>
-                <DashboardCard title="Wallet" link="/wallet" style={rightCardStyle}>
+            <div>
+                <DashboardCard title="Wallet" link="/wallet">
                     <form>
                         <InputComponent
                             label="Ticker ID"
@@ -89,15 +83,16 @@ function WalletPage() {
                         <ButtonComponent onClick={handleCreateTransaction} text="Add Transaction" />
                     </form>
 
-                    {/* 🔹 Affichage des transactions */}
                     <h3 style={{ marginTop: '20px' }}>Your Transactions</h3>
-                    <ul>
-                        {transactions.map(tx => (
-                            <li key={tx.id}>
-                                {tx.ticker_id} - {tx.amount} shares @ ${tx.buy_price}
-                            </li>
+                    <div>
+                        {transactions.map(transaction => (
+                            <TransactionComponent key={transaction.id} 
+                            ticker_id={transaction.ticker_id} 
+                            amount={transaction.amount} 
+                            buy_price={transaction.buy_price} />
                         ))}
-                    </ul>
+                    </div>
+                    
                 </DashboardCard>
             </div>
         </div>
@@ -117,8 +112,16 @@ const DashboardCard = ({ title, link, style, children }) => (
 const dashboardStyle = {
     display: 'flex',
     gap: '20px',
+    marginTop: '10px',
     margin: '25px 50px 0 50px',
     alignItems: 'stretch'
+};
+
+const leftColumnStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    width: '40%'
 };
 
 const rightCardStyle = {
@@ -134,7 +137,8 @@ const cardStyle = {
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    height: '300px'
 };
 
 const titleStyle = {
@@ -145,7 +149,7 @@ const titleStyle = {
 const contentStyle = {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center'
 };
 
@@ -155,13 +159,6 @@ const arrowStyle = {
     right: '15px',
     color: 'var(--main-color)',
     textDecoration: 'none'
-};
-
-const centeredContainerStyle = {
-    margin: "15px",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
 };
 
 const loginButtonStyle = {
