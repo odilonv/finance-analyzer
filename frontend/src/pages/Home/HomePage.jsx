@@ -35,13 +35,16 @@ function HomePage() {
     return (
         <div style={{ margin: "15px" }}>
             <div style={dashboardStyle}>
-                <div style={{ ...cardStyle, justifyContent: 'center', alignItems: 'start', height: '620px', paddingLeft: '50px' }}>
-                    <h1>Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span> !</h1>
+                <div style={{ ...cardStyle, justifyContent: 'center', alignItems: 'flex-start', height: '620px', paddingLeft: '50px', gap: '20px' }}>
+                    <h1 style={{ textAlign: 'left' }}>
+                        Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span> !
+                    </h1>
                     <p>Log in to access your personalized dashboard<br />and start managing your stock portfolio today.</p>
                     <Link to="/login" style={loginButtonStyle}>
                         Log In to Get Started <ArrowForwardIosRoundedIcon />
                     </Link>
                 </div>
+
                 <div style={rightColumnStyle}>
                     <DashboardCard title="Market News" link="/news">
                         {/* Ajouter le component ici */}
@@ -178,7 +181,7 @@ const dashboardStyle = {
     display: 'flex',
     gap: '20px',
     marginTop: '10px',
-    margin: '10px 10px 0 50px',
+    margin: '30px 30px 0 30px',
     alignItems: 'stretch'
 };
 
@@ -186,7 +189,7 @@ const leftColumnStyle = {
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
-    width: '40%'
+    width: '50%'
 };
 
 const rightColumnStyle = {
