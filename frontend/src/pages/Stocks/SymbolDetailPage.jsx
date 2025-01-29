@@ -60,6 +60,8 @@ const SymbolDetailPage = () => {
                     throw new Error(`API call failed with status ${response.status}`);
                 }
                 const historyData = await response.json();
+                /* trier les données par date */
+                historyData.values = historyData.values.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
                 console.log("historyData:", historyData);
 
                 setHistory(historyData);
