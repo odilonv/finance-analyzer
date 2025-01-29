@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 CREATE TABLE IF NOT EXISTS `wallet` (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    user_id INT
 
 );
 
