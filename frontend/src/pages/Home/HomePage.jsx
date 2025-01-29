@@ -1,57 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { ButtonComponent, InputComponent } from '../../components';
-import { useNotification } from '../../contexts/NotificationContext';
-import { createTransaction, getTransactionsByUserId } from "../../services/API/ApiTransactions.js";
 
-function WalletPage() {
-    const { triggerNotification } = useNotification();
+function HomePage() {
     const { user } = useContext(UserContext);
-    
-    const [newTransaction, setNewTransaction] = useState({
-        ticker_id: '',
-        amount: 0,
-        buy_price: 0
-    });
 
-    const [transactions, setTransactions] = useState([]);
-
-    // 🔹 Récupération des transactions de l'utilisateur
-    useEffect(() => {
-        if (user) {
-            fetchTransactions();
-        }
-    }, [user]);
-
-    const fetchTransactions = async () => {
-        try {
-            const userTransactions = await getTransactionsByUserId(user.id);
-            setTransactions(userTransactions);
-        } catch (error) {
-            console.error(error);
-            triggerNotification('Failed to load transactions', 'error');
-        }
-    };
-
-    const handleCreateTransaction = async () => {
-        try {
-            newTransaction.user_id = user.id;
-            const transaction = await createTransaction(newTransaction);
-            if (transaction.id) {
-                triggerNotification('Transaction created', 'success');
-                setTransactions([...transactions, transaction]); // Ajout immédiat
-            } else {
-                triggerNotification('Error creating transaction', 'error');
-            }
-        } catch (error) {
-            console.error(error);
-            triggerNotification('An error occurred', 'error');
-        }
-    };
-
-    if (!user) {
+    if (user) {
         return (
             <div style={{ margin: "15px" }}>
                 <div style={dashboardStyle}>
@@ -142,7 +97,8 @@ const cardStyle = {
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    height: '300px'
 };
 
 const titleStyle = {
@@ -153,7 +109,7 @@ const titleStyle = {
 const contentStyle = {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center'
 };
 
@@ -163,13 +119,6 @@ const arrowStyle = {
     right: '15px',
     color: 'var(--main-color)',
     textDecoration: 'none'
-};
-
-const centeredContainerStyle = {
-    margin: "15px",
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
 };
 
 const loginButtonStyle = {
@@ -183,4 +132,4 @@ const loginButtonStyle = {
     marginTop: '20px'
 };
 
-export default WalletPage;
+export default HomePage;
