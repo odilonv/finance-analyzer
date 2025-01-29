@@ -19,7 +19,7 @@ newsRouter.get('/', async (req, res) => {
   const tickerQuery = tickers.join(',');
 
   try {
-    const url = 'https://yahoo-finance15.p.rapidapi.com/api/v2/markets/news?tickers=AAPL&type=ALL';
+    const url = `https://yahoo-finance15.p.rapidapi.com/api/v2/markets/news?tickers=${tickerQuery}&type=ALL`;
     const options = {
       method: 'GET',
       headers: {

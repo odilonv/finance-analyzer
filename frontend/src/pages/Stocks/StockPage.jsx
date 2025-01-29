@@ -64,7 +64,7 @@ const StockPage = () => {
     };
 
     return (
-        <div style={{ padding: "20px", backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
+        <div style={{ padding: "20px", minHeight: "100vh" }}>
             <div style={titleStyle}>
                 <h1>Dive into <span style={{ color: 'var(--main-color)' }}>Real-Time</span> Stock Market Data.</h1>
             </div>

@@ -45,7 +45,7 @@ const NewsPage = () => {
   const displayedData = filteredData.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#f4f4f4", minHeight: "100vh" }}>
+    <div style={{ padding: "20px", minHeight: "100vh" }}>
       <div style={titleStyle}>
         <h1>Stay Updated with the Latest <span style={{ color: 'var(--main-color)' }}>News</span> on the <span style={{ color: 'var(--main-color)' }}>Stock Market</span>.</h1>
       </div>

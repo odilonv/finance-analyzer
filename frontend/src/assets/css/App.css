@@ -11,7 +11,7 @@
 :root {
     /* Fixed colors */
     --main-color: rgb(255, 181, 78);
-    --main-darker-color: rgb(147, 65, 65);
+    --main-darker-color: rgb(232, 165, 72);
     --shadow-color: rgba(113, 97, 236, 0.2);
     --light-color: #a7f2c5;
     --lighter-color: #ceffc9;
@@ -27,7 +27,7 @@
     /* Theme colors */
     --white: white;
 
-    --light-grey-1: #fafaff;
+    --light-grey-1: #f7f6f6;
     --light-grey-2: #efefef;
     --light-grey-3: #bebebe;
 
@@ -80,7 +80,7 @@ body,
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--light-grey-2);
+    background-color: var(--light-grey-1);
 }
 
 h1,
@@ -103,25 +103,20 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* height: 17vh; */
     width: 100%;
     flex-direction: column;
     top: 0;
     left: 0;
-    position: sticky;
     z-index: 20;
 }
 
 .app-header {
     display: flex;
-    background-color: var(--white);
-    color: var(--black);
     min-height: 8vh;
     width: 100%;
     align-items: center;
     justify-content: space-between;
     z-index: 20;
-    box-shadow: var(--box-shadow);
 }
 
 .app-header div {
