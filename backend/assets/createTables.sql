@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 CREATE TABLE IF NOT EXISTS `transaction` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    ticker_id VARCHAR (255) NOT NULL,
+    ticker_id VARCHAR(255) NOT NULL,
     amount FLOAT NOT NULL,
     buy_price FLOAT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES `user`(id),
+    FOREIGN KEY (user_id) REFERENCES `user`(id)
 );
