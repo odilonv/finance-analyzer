@@ -6,6 +6,8 @@ export { default as UserPage } from './User/UserPage';
 export { default as VerifyEmailPage } from './Login/VerifyEmailPage'
 export { default as NotFoundPage } from './Errors/NotFoundPage';
 
+export { default as NewsPage } from './News/NewsPage';
+
 export { default as StockPage } from './Stocks/StockPage';
 export { default as SymbolDetailPage } from './Stocks/SymbolDetailPage';
 export { default as WalletPage } from './Wallet/WalletPage';

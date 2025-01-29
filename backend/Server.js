@@ -20,8 +20,10 @@ app.use(express.json());
 import { startUsersService } from './services/users/index.js';
 import { startTransactionsService } from './services/transactions/index.js';
 import { stockRouter } from './services/stocks/stockRoutes.js';
+import { newsRouter } from './services/news/newsRoutes.js';
 
 app.use('/stocks', stockRouter);
+app.use('/news', newsRouter);
 
 
 startUsersService();

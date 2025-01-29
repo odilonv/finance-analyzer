@@ -53,12 +53,20 @@ function WalletPage() {
 
     if (!user) {
         return (
-            <div style={centeredContainerStyle}>
-                <h1>Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span>!</h1>
-                <p>Log in to access your personalized dashboard and start managing your stock portfolio today.</p>
-                <Link to="/login" style={loginButtonStyle}>
-                    Log In to Get Started <ArrowForwardIosRoundedIcon />
-                </Link>
+            <div style={{ margin: "15px" }}>
+                <div style={dashboardStyle}>
+                    <div style={leftColumnStyle}>
+                        <DashboardCard title="Market News" link="/news">
+                            {/* Ajouter le component ici */}
+                        </DashboardCard>
+                        <DashboardCard title="Stocks" link="/stocks">
+                            {/* Ajouter le component ici */}
+                        </DashboardCard>
+                    </div>
+                    <DashboardCard title="Wallet" link="/wallet" style={rightCardStyle}>
+                        {/* Ajouter le component ici */}
+                    </DashboardCard>
+                </div>
             </div>
         );
     }
@@ -66,39 +74,24 @@ function WalletPage() {
     return (
         <div style={{ margin: "15px" }}>
             <div style={dashboardStyle}>
-                <DashboardCard title="Wallet" link="/wallet" style={rightCardStyle}>
-                    <form>
-                        <InputComponent
-                            label="Ticker ID"
-                            validators={[value => value.length === 0 ? 'Required' : null]}
-                            value={newTransaction.ticker_id}
-                            setValue={value => setNewTransaction({ ...newTransaction, ticker_id: value })}
-                        />
-                        <InputComponent
-                            label="Amount"
-                            validators={[value => value < 0 ? 'Amount must be positive' : null]}
-                            value={newTransaction.amount}
-                            setValue={value => setNewTransaction({ ...newTransaction, amount: value })}
-                        />
-                        <InputComponent
-                            label="Buy Price"
-                            validators={[value => value < 0 ? 'Price must be positive' : null]}
-                            value={newTransaction.buy_price}
-                            setValue={value => setNewTransaction({ ...newTransaction, buy_price: value })}
-                        />
-                        <ButtonComponent onClick={handleCreateTransaction} text="Add Transaction" />
-                    </form>
+                <div style={{ ...cardStyle, justifyContent: 'center', alignItems: 'flex-start', height: '620px', paddingLeft: '50px', gap: '20px' }}>
+                    <h1 style={{ textAlign: 'left' }}>
+                        Welcome to <span style={{ color: 'var(--main-color)' }}>Finance Analyzer</span> !
+                    </h1>
+                    <p>Log in to access your personalized dashboard<br />and start managing your stock portfolio today.</p>
+                    <Link to="/login" style={loginButtonStyle}>
+                        Log In to Get Started <ArrowForwardIosRoundedIcon />
+                    </Link>
+                </div>
 
-                    {/* 🔹 Affichage des transactions */}
-                    <h3 style={{ marginTop: '20px' }}>Your Transactions</h3>
-                    <ul>
-                        {transactions.map(tx => (
-                            <li key={tx.id}>
-                                {tx.ticker_id} - {tx.amount} shares @ ${tx.buy_price}
-                            </li>
-                        ))}
-                    </ul>
-                </DashboardCard>
+                <div style={rightColumnStyle}>
+                    <DashboardCard title="Market News" link="/news">
+                        {/* Ajouter le component ici */}
+                    </DashboardCard>
+                    <DashboardCard title="Stocks" link="/stocks">
+                        {/* Ajouter le component ici */}
+                    </DashboardCard>
+                </div>
             </div>
         </div>
     );
@@ -117,8 +110,23 @@ const DashboardCard = ({ title, link, style, children }) => (
 const dashboardStyle = {
     display: 'flex',
     gap: '20px',
-    margin: '25px 50px 0 50px',
+    marginTop: '10px',
+    margin: '30px 30px 0 30px',
     alignItems: 'stretch'
+};
+
+const leftColumnStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    width: '50%'
+};
+
+const rightColumnStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    width: '60%'
 };
 
 const rightCardStyle = {

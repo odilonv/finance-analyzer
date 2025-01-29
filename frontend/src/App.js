@@ -1,5 +1,5 @@
 import React from 'react';
-import './assets/css/App.css';
+import './assets/css/App.css'; // Assurez-vous d'importer le CSS
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { FooterComponent, HeaderComponent } from './components';
 import {
@@ -9,10 +9,11 @@ import {
   SettingsPage,
   SignUpPage,
   UserPage,
-  VerifyEmailPage,
+  CardCreationPage,
   StockPage,
   SymbolDetailPage,
-  WalletPage
+  WalletPage,
+  NewsPage
 } from './pages';
 import { NotificationProvider, UserProvider } from './contexts';
 
@@ -25,8 +26,13 @@ function App() {
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/news" element={<NewsPage />} />
             <Route path="/stocks" element={<StockPage />} />
             <Route path="/stocks/:symbol" element={<SymbolDetailPage />} />
+            <Route path="/boards/:id" element={<BoardPage />} />
+            <Route path="/boards/create" element={<BoardCreationPage />} />
+            <Route path="/boards" element={<BoardListPage />} />
+            <Route path="/cards/create/:boardId" element={<CardCreationPage />} />
             <Route path="/logout" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/verifyEmail/:token" element={<VerifyEmailPage />} />
@@ -37,7 +43,6 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </NotificationProvider>
-        <FooterComponent />
       </UserProvider>
     </Router>
   );

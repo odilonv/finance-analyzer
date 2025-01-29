@@ -4,14 +4,14 @@ import path from 'path';
 dotenv.config({ path: path.resolve('./backend/.env') });
 
 const API_KEY = process.env.API_KEY;
-console.log("API_KEY dans stockRoutes:", API_KEY); 
+console.log("API_KEY dans stockRoutes:", API_KEY);
 
 import express from 'express';
 
 export const stockRouter = express.Router();
 
 stockRouter.get('/', async (req, res) => {
-    try {       
+    try {
         const response = await fetch(`https://api.twelvedata.com/stocks?apikey=${API_KEY}`);
         if (!response.ok) {
             throw new Error(`API call failed with status ${response.status}`);
@@ -41,10 +41,12 @@ stockRouter.get('/:symbol', async (req, res) => {
 
 stockRouter.get('/:symbol/history', async (req, res) => {
     const symbol = req.params.symbol;
+    const interval = req.query.interval || '1day';
+    const start_date = req.query.start_date;
+    const end_date = req.query.end_date;
+    
     try {
-        console.log(`Fetching stock history for symbol ${symbol}...`);
-        
-        const response = await fetch(`https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&apikey=${API_KEY}`);
+        const response = await fetch(`https://api.twelvedata.com/time_series?apikey=${API_KEY}&symbol=${symbol}&interval=${interval}&start_date=${start_date}&end_date=${end_date}`);
         if (!response.ok) {
             throw new Error(`API call failed with status ${response.status}`);
         }
