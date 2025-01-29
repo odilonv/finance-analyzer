@@ -94,17 +94,17 @@ const AutoScrollContainer = ({ children }) => {
 
         const scroll = () => {
             if (!scrollContainer) return;
-            scrollAmount += 1; // Pixels à faire défiler à chaque tick
+            scrollAmount += 1; 
             if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-                scrollAmount = 0; // Revenir au début pour un effet boucle
+                scrollAmount = 0; 
                 scrollContainer.scrollLeft = 0;
             } else {
                 scrollContainer.scrollLeft += 1;
             }
         };
 
-        // const interval = setInterval(scroll, 10); // Vitesse du défilement (50ms)
-        // return () => clearInterval(interval); // Nettoyer l'intervalle lors du démontage
+        const interval = setInterval(scroll, 20); // Vitesse du défilement (50ms)
+        return () => clearInterval(interval); 
     }, []);
 
     return (
