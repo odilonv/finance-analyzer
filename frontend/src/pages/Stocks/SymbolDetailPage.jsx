@@ -50,7 +50,10 @@ const SymbolDetailPage = () => {
 
             if (interval === "1day") intervalData = "30min";
             else if (interval === "5day") intervalData = "4h";
-            else intervalData = "1day";
+            else if (interval === "1month") intervalData = "1day";
+            else if (interval === "6month") intervalData = "1day";
+            else if (interval === "1year") intervalData = "1week";
+            else if (interval === "5year") intervalData = "1month";
 
             try {
                 const response = await fetch(
