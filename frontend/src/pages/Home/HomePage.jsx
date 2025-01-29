@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { StockChart, StockLine } from '../../components';
-import { height } from '@mui/system';
+import { StockLine } from '../../components';
 
 function HomePage() {
     const { user } = useContext(UserContext);
@@ -26,7 +25,6 @@ function HomePage() {
 
         return (
             <DashboardCard title="Stocks" link="/stocks" autoScroll>
-
                 {stocks.map((stock) => (
                     <StockLine
                         key={stock.symbol}
@@ -39,8 +37,7 @@ function HomePage() {
                             navigate(`/stocks/${stock.symbol}`);
                         }}
                     />
-                ))
-                }
+                ))}
             </DashboardCard>
         );
     }

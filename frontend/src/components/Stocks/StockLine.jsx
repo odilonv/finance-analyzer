@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material";
 
-const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
+const StockLine = ({ symbol, symbolName, startDate, endDate, interval, onClick }) => {
     const [history, setHistory] = useState(null);
     const [percentChange, setPercentChange] = useState(null);
     const [color, setColor] = useState("black");
@@ -59,7 +59,8 @@ const StockLine = ({ symbol, symbolName, startDate, endDate, interval }) => {
     }, [symbol, startDate, endDate, interval]);
 
     return (
-        <Box sx={{ padding: "15px", backgroundColor: "#f5f5f5", borderRadius: "8px", boxShadow: 2, minWidth: "200px" }}>
+        <Box sx={{ padding: "15px", backgroundColor: "#f5f5f5", borderRadius: "8px", boxShadow: 2, minWidth: "200px" }}
+            onClick={onClick}>
             <Box sx={{ display: "flex", flexDirection: "column", height: "100%", justifyContent: "space-between" }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
                     <Typography variant="h10" sx={{

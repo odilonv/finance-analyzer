@@ -28,7 +28,9 @@ const SymbolDetailPage = () => {
                 if (!response.ok) {
                     throw new Error(`API call failed with status ${response.status}`);
                 }
+                
                 const data = await response.json();
+                console.log(data);
                 setData(data);
             } catch (error) {
                 console.error("Error fetching stock data:", error);
