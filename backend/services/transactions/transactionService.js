@@ -52,11 +52,11 @@ export const TransactionService = {
 
     getTransactionsByUserId: async (user_id) => {
         const connection = await DatabaseConnection.getInstance();
-        const [results] = await connection.query('SELECT * FROM ticker WHERE user_id = ?',
+        const [results] = await connection.query('SELECT * FROM transaction WHERE user_id = ?',
             [user_id]);
         if (results.length > 0) {
-            const tickerData = results[0];
-            return Transaction.fromDatabase(tickerData);
+            const tickerData = results;
+            return tickerData.map((tickerData) => Transaction.fromDatabase(tickerData));
         }
         return null;
     }
