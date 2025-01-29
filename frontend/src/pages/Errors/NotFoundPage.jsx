@@ -16,7 +16,7 @@ function NotFoundPage() {
                     text={'I come back to my board'}
                     borderRadius={'10px'}
                     endIcon={<ArrowForwardIosRoundedIcon style={{ color: 'white' }} />}
-                    href={'/board'} />
+                    href={'/'} />
             </div>
         </div>
     );
