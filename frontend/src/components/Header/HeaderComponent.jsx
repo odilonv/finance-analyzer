@@ -30,6 +30,10 @@ function Header() {
         navigate('/boards');
     };
 
+    const handleStocksClick = () => {
+        navigate('/stocks');
+    };
+
     const handleTrellaClick = () => {
         navigate('/');
     };
@@ -57,14 +61,15 @@ function Header() {
             <nav className='app-header'>
                 <span onClick={handleTrellaClick} id='logo-header'>Trella</span>
                 <div>
-
+                    <div className="header-link-container">
+                        <span className="header-link" onClick={handleStocksClick}>Stocks</span>
+                    </div>
 
                     {
                         user && (
                             <div className="header-link-container">
                                 <span className="header-link" onClick={handleBoardsClick}>Boards</span>
                             </div>
-
                         )
                     }
 

@@ -1,8 +1,11 @@
-// backend/server.js
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve('./backend/.env') });
+console.log("API_KEY après chargement :", process.env.API_KEY);
+
 import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
-// Importez ici d'autres fonctions pour démarrer d'autres services si nécessaire
 
 const app = express();
 const PORT = 5000;

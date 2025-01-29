@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { TextField, Select, MenuItem, Card, CardContent, Typography, Grid, Pagination } from "@mui/material";
 import { Business, AttachMoney, Public, SyncAlt, Storefront, Code } from "@mui/icons-material"; // Icônes MUI
 
@@ -9,6 +10,7 @@ const StockPage = () => {
     const [filterCategory, setFilterCategory] = useState("");
     const [page, setPage] = useState(1);
     const itemsPerPage = 20;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,7 +83,10 @@ const StockPage = () => {
                 {displayedData.map((stock) => (
                     <Grid item xs={12} sm={6} md={4} key={stock.figi_code}>
                         <Card variant="outlined" sx={{ padding: "15px", boxShadow: 3 }}>
-                            <CardContent>
+                            <CardContent
+                                onClick={() => {
+                                    navigate(`/stocks/${stock.symbol}`);
+                                }}>
                                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                                     <Business /> {stock.name}
                                 </Typography>

@@ -14,7 +14,8 @@ import {
   BoardListPage,
   BoardCreationPage,
   CardCreationPage,
-  StockPage
+  StockPage,
+  SymbolDetailPage 
 } from './pages';
 import { NotificationProvider, UserProvider } from './contexts';
 
@@ -28,6 +29,7 @@ function App() {
             <Route exact path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/stocks" element={<StockPage />} />
+            <Route path="/stocks/:symbol" element={<SymbolDetailPage />} />
             <Route path="/boards/:id" element={<BoardPage />} />
             <Route path="/boards/create" element={<BoardCreationPage />} />
             <Route path="/boards" element={<BoardListPage />} />
