@@ -44,11 +44,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t myapp:${{ github.sha }} .
+          docker build -t finance-analyzer:${{ github.sha }} .
 
       - name: Tag Docker image with commit SHA
         run: |
-          docker tag myapp:${{ github.sha }} myapp:latest
+          docker tag finance-analyzer:${{ github.sha }} finance-analyzer:latest
 
   # Job de publication de Docker Image (en fonction de la release)
   publish:
@@ -68,5 +68,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push myapp:${{ github.sha }}
-          docker push myapp:latest
+          docker push finance-analyzer:${{ github.sha }}
+          docker push finance-analyzer:latest
