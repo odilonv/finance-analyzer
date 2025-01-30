@@ -8,7 +8,7 @@
     "client": "cd frontend && npm start",
     "server": "node start-server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "concurrently \"npm run test --workspace frontend\" \"npm run test --workspace backend\"", // Exécute les tests dans frontend et backend
     "install": "cd frontend && npm install && cd ../backend && npm install",
     "database": "node start-server.js"
   },
