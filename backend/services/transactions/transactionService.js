@@ -22,16 +22,15 @@ export const TransactionService = {
         return newTransaction;
     },
 
-    deleteTransaction: async (userId) => {
+    deleteTransaction: async (id) => {
         const connection = await DatabaseConnection.getInstance();
-        const [result] = await connection.query('DELETE FROM transaction WHERE user_id = ?', [userId]);
+        const [result] = await connection.query('DELETE FROM transaction WHERE id = ?', [id]);
         return result.affectedRows > 0;
     },
 
     getTransactionById: async (id) => {
         const connection = await DatabaseConnection.getInstance();
-        const [results] = await connection.query('SELECT * FROM transaction WHERE id = ?',
-            [id]);
+        const [results] = await connection.query('SELECT * FROM transaction WHERE id = ?',[id]);
         if (results.length > 0) {
             const tickerData = results[0];
             return Transaction.fromDatabase(tickerData);
