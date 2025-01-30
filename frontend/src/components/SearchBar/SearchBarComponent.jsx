@@ -3,7 +3,7 @@ import { TextField, InputAdornment, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchBarComponent({ placeholder, color, textColor, value, onChange, borderRadius, startIcon, endIcon }) {
+function SearchBarComponent({ placeholder, color, textColor, value, onChange, borderRadius, startIcon, endIcon, onKeyDown }) {
     const handleClear = () => {
         onChange({ target: { value: '' } });
     };
@@ -37,6 +37,7 @@ function SearchBarComponent({ placeholder, color, textColor, value, onChange, bo
             }}
             value={value}
             onChange={onChange}
+            onKeyDown={onKeyDown}
             placeholder={placeholder}
             style={{
                 backgroundColor: color ?? 'var(--white)',
