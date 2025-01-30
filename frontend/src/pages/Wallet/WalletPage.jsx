@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router';
 import { useNotification } from '../../contexts/NotificationContext';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 
-import { createTransaction, getTransactionsByUserId } from "../../services/API/ApiTransactions.js";
+import { createTransaction, getTransactionsByUserId, deleteTransaction } from "../../services/API/ApiTransactions.js";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { color } from '@mui/system';
@@ -129,6 +130,17 @@ function WalletPage() {
         return acc;
     }, {});
 
+    const handleDeleteTransaction = async (transactionId) => {
+        try {
+            await deleteTransaction(transactionId);
+            triggerNotification('Transaction deleted successfully', 'success');
+            setTransactions(transactions.filter(t => t.id !== transactionId));
+        } catch (error) {
+            console.error(error);
+            triggerNotification('Error deleting transaction', 'error');
+        }
+    };
+
     return (
         <div style={{ margin: "20px" }}>
             <div class="title-style">
@@ -166,8 +178,6 @@ function WalletPage() {
                             const totalValue = groupedTransactions[ticker].reduce((sum, t) => sum + (t.amount * t.buy_price), 0);
                             const latestPrice = stockPrices[ticker] || 0;
                             const valueDifference = latestPrice * totalAmount -  totalValue;
-                            console.log(ticker+ "\nTP : " + totalValue + " \nTAP :  " + latestPrice * totalAmount + " \nDIF : " + valueDifference);
-
                             return (
                                 <div key={ticker} style={{ marginBottom: '15px' }}>
                                     <div
@@ -210,11 +220,18 @@ function WalletPage() {
                                                 const individualDifference = individualPrice * transaction.amount - individualValue;
                                                 return (
                                                     <div key={transaction.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0' }}>
-                                                        <div className="ticker-id">{transaction.ticker_id}</div>
+                                                        <div className="ticker-id">
+                                                            <Button 
+                                                                onClick={() => handleDeleteTransaction(transaction.id)} 
+                                                                sx={{ color: 'grey', minWidth: '30px' }}>
+                                                                <CloseRoundedIcon />
+                                                            </Button>
+                                                        </div>
                                                         <div className="amount">{transaction.amount}</div>
                                                         <div className="buy-price">
                                                             ${transaction.buy_price.toFixed(2)} 
                                                         </div>
+                                                        
                                                         <div className="icon">{individualPrice && (
                                                                 <>
                                                                     <span style={{ marginRight:'10px', color: individualDifference > 0 ? 'green' : 'red' }}>
