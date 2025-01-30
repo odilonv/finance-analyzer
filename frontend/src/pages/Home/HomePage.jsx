@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,37 @@ function HomePage() {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
+    const [stocksData, setStocksData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const renderStockLine = () => {
+        const startDate = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0];
+        const endDate = new Date().toISOString().split("T")[0];
+
+        return (
+            <DashboardCard title="Stocks" link="/stocks" autoScroll>
+                {stocksData.map((stock) => (
+                    <StockLine
+                        key={stock.symbol}
+                        symbol={stock.symbol}
+                        symbolName={stock.symbolName}
+                        startDate={startDate}
+                        endDate={endDate}
+                        interval={"15min"}
+                        lastPrice={stock.lastPrice}
+                        percentChange={stock.percentChange}
+                        color={stock.color}
+                        onClick={() => {
+                            navigate(`/stocks/${stock.symbol}`);
+                        }}
+                    />
+                ))}
+            </DashboardCard>
+        );
+    };
+
+    // Fetch stock data
+    useEffect(() => {
         const stocks = [
             { symbol: "AAPL", symbolName: "Apple Inc." },
             { symbol: "MSFT", symbolName: "Microsoft Corporation" },
@@ -23,23 +53,52 @@ function HomePage() {
         const startDate = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0];
         const endDate = new Date().toISOString().split("T")[0];
 
-        return (
-            <DashboardCard title="Stocks" link="/stocks" autoScroll>
-                {stocks.map((stock) => (
-                    <StockLine
-                        key={stock.symbol}
-                        symbol={stock.symbol}
-                        symbolName={stock.symbolName}
-                        startDate={startDate}
-                        endDate={endDate}
-                        interval={"15min"}
-                        onClick={() => {
-                            navigate(`/stocks/${stock.symbol}`);
-                        }}
-                    />
-                ))}
-            </DashboardCard>
-        );
+        const fetchStockData = async () => {
+            try {
+                const responses = await Promise.all(
+                    stocks.map(stock =>
+                        fetch(
+                            `http://localhost:5000/stocks/${stock.symbol}/history?interval=15min&start_date=${startDate}&end_date=${endDate}`
+                        ).then(res => res.json())
+                    )
+                );
+
+                const updatedStocksData = responses.map((historyData, index) => {
+                    if (historyData.code === 429) {
+                        console.warn(`Trop de requêtes. Nouvelle tentative dans quelques secondes...`);
+                        return { symbol: stocks[index].symbol, symbolName: stocks[index].symbolName };
+                    }
+
+                    historyData.values = historyData.values.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+
+                    const lastValue = historyData.values[historyData.values.length - 1]?.close;
+                    const firstValue = historyData.values[0]?.close;
+                    const change = ((lastValue - firstValue) / firstValue) * 100;
+                    const color = change >= 0 ? "green" : "red";
+
+                    return {
+                        symbol: stocks[index].symbol,
+                        symbolName: stocks[index].symbolName,
+                        lastPrice: lastValue,
+                        percentChange: change,
+                        color: color
+                    };
+                });
+
+                setStocksData(updatedStocksData);
+                setLoading(false);
+
+            } catch (error) {
+                console.error("Error fetching stock data:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchStockData();
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
     if (user) {
@@ -59,7 +118,6 @@ function HomePage() {
             </div>
         );
     }
-
 
     return (
         <div style={{ margin: "15px" }}>
@@ -85,6 +143,7 @@ function HomePage() {
     );
 }
 
+
 const AutoScrollContainer = ({ children }) => {
     const scrollRef = useRef(null);
 
@@ -94,9 +153,9 @@ const AutoScrollContainer = ({ children }) => {
 
         const scroll = () => {
             if (!scrollContainer) return;
-            scrollAmount += 1; 
+            scrollAmount += 1;
             if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-                scrollAmount = 0; 
+                scrollAmount = 0;
                 scrollContainer.scrollLeft = 0;
             } else {
                 scrollContainer.scrollLeft += 1;
@@ -104,7 +163,7 @@ const AutoScrollContainer = ({ children }) => {
         };
 
         const interval = setInterval(scroll, 20); // Vitesse du défilement (50ms)
-        return () => clearInterval(interval); 
+        return () => clearInterval(interval);
     }, []);
 
     return (

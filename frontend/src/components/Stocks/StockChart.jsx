@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -30,7 +30,7 @@ const StockChart = ({ symbol, startDate, endDate, interval }) => {
                 if (!response.ok) {
                     throw new Error(`API call failed with status ${response.status}`);
                 }
-                
+
                 const historyData = await response.json();
                 console.log(historyData.values);
                 historyData.values = historyData.values.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
@@ -66,7 +66,7 @@ const StockChart = ({ symbol, startDate, endDate, interval }) => {
     };
 
     return (
-        <Box sx={{ padding: "20px"}}>
+        <Box sx={{ padding: "20px" }}>
             <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
                 {percentChange !== null && (
                     <Typography
