@@ -16,6 +16,8 @@ export { default as UserInfoComponent } from './User/UserInfoComponent';
 export { default as UserInfoEntryComponent } from './User/UserInfoEntryComponent';
 export { default as TransactionComponent } from './Transaction/TransactionComponent';
 
+export { default as NewsPreviewComponent } from './News/NewsPreviewComponent';
+
 export { default as StockChart } from './Stocks/StockChart';
 export { default as StockLine } from './Stocks/StockLine';
 

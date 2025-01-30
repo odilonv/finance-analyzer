@@ -1,23 +1,23 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-import { StockLine } from '../../components';
+import { NewsPreviewComponent, StockLine } from '../../components';
+import { useNavigate } from 'react-router-dom';
+import { height } from '@mui/system';
 
 function HomePage() {
     const { user } = useContext(UserContext);
-    const navigate = useNavigate();
-
     const [stocksData, setStocksData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const renderStockLine = () => {
         const startDate = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split("T")[0];
         const endDate = new Date().toISOString().split("T")[0];
 
         return (
-            <DashboardCard title="Stocks" link="/stocks" autoScroll>
+            <DashboardCard title="Stocks" link="/stocks" autoScroll style={{ height: '280px' }}>
                 {stocksData.map((stock) => (
                     <StockLine
                         key={stock.symbol}
@@ -38,7 +38,6 @@ function HomePage() {
         );
     };
 
-    // Fetch stock data
     useEffect(() => {
         const stocks = [
             { symbol: "AAPL", symbolName: "Apple Inc." },
@@ -106,8 +105,8 @@ function HomePage() {
             <div style={{ margin: "15px" }}>
                 <div style={dashboardStyle}>
                     <div style={leftColumnStyle}>
-                        <DashboardCard title="Market News" link="/news">
-                            {/* Ajouter le component ici */}
+                        <DashboardCard title="Market News" link="/news" style={{ height: '320px' }}>
+                            <NewsPreviewComponent />
                         </DashboardCard>
                         {renderStockLine()}
                     </div>
@@ -133,8 +132,8 @@ function HomePage() {
                 </div>
 
                 <div style={rightColumnStyle}>
-                    <DashboardCard title="Market News" link="/news">
-                        {/* Ajouter le component ici */}
+                    <DashboardCard title="Market News" link="/news" style={{ justifyContent: 'start' }}>
+                        <NewsPreviewComponent />
                     </DashboardCard>
                     {renderStockLine()}
                 </div>
@@ -142,6 +141,7 @@ function HomePage() {
         </div>
     );
 }
+
 
 
 const AutoScrollContainer = ({ children }) => {
