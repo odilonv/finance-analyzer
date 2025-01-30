@@ -81,3 +81,15 @@
     align-items: center;
     justify-content: center;
 }
+
+.transaction-button{
+    height: 30px;
+    width: 100px;
+    display: flex;
+
+    font-weight: 500;
+    column-gap: 10px;
+    background-color: var(--main-color);
+    color: white;
+    border-radius: 40px;
+  }

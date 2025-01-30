@@ -352,3 +352,11 @@ footer {
     width: 100%;
     padding: 20px;
 }
+
+.title-style {
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    display: flex;
+    justify-content: start;
+  };
