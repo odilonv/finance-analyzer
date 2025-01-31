@@ -5,7 +5,6 @@ WORKDIR /finance-analyzer
 
 ENV NODE_ENV=production
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install production dependencies
