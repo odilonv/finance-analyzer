@@ -5,7 +5,8 @@ WORKDIR /finance-analyzer
 
 ENV NODE_ENV=production
 
-COPY backend/package.json backend/package-lock.json ./
+COPY backend/package*.json ./
+
 RUN npm install --only=production
 
 COPY backend . 
