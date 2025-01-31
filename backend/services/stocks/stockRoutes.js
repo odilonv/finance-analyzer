@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import config from '../../config/config.js';
 
 const API_KEY = config.API_KEY;
