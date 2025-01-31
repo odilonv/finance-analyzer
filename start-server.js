@@ -14,13 +14,38 @@ const execCommand = (command) => {
   });
 };
 
-// Fonction pour démarrer un processus en arrière-plan
+// Fonction pour démarrer un processus en arrière-plan et attendre sa fin
 const spawnProcess = (command, args) => {
-  const child = spawn(command, args, { stdio: 'inherit', shell: true });
-  child.on('error', (error) => {
-    console.error(`Erreur lors du démarrage du processus: ${error.message}`);
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, { stdio: 'inherit', shell: true });
+    child.on('error', (error) => {
+      console.error(`Erreur lors du démarrage du processus: ${error.message}`);
+      reject(error);
+    });
+    child.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(`Le processus s'est terminé avec le code ${code}`));
+      } else {
+        resolve();
+      }
+    });
   });
-  return child;
+};
+
+// Fonction pour vérifier que le serveur écoute sur un port donné
+const waitForServer = (port) => {
+  return new Promise((resolve, reject) => {
+    const interval = setInterval(() => {
+      execCommand(`curl --silent --head --fail http://localhost:${port}`)
+        .then(() => {
+          clearInterval(interval);
+          resolve();
+        })
+        .catch((error) => {
+          console.log(`Le serveur n'est pas encore disponible sur le port ${port}. Nouvelle tentative...`);
+        });
+    }, 1000); // Vérifier toutes les secondes
+  });
 };
 
 const startServer = async () => {
@@ -32,24 +57,24 @@ const startServer = async () => {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     console.log('Démarrage du serveur Node.js...');
-    const serverProcess = spawnProcess('node', ['backend/Server.js']);
+    // Démarre le serveur et attends qu'il termine
+    await spawnProcess('node', ['backend/Server.js']);
 
-    console.log('Récupération de l\'ID du conteneur MySQL...');
-    const containerId = await execCommand('docker ps -q -f name=finance-analyzer-db-1');
-    if (!containerId) {
-      throw new Error('Le conteneur MySQL n\'a pas été trouvé');
-    }
+    console.log('Attente de la disponibilité du serveur sur le port 5000...');
+    // Attend que le serveur soit prêt avant de continuer
+    await waitForServer(5000);
 
     console.log('Le serveur est en cours d\'exécution.');
 
-    // Attendre que le processus du serveur se termine (facultatif)
-    serverProcess.on('close', (code) => {
-      console.log(`Le serveur Node.js s'est arrêté avec le code ${code}`);
-    });
-
   } catch (error) {
     console.error('Erreur lors du démarrage du serveur:', error);
+    process.exit(1); // Exit avec un code d'erreur pour indiquer l'échec de la tâche
   }
 };
 
-startServer();
+// Lancer le serveur et attendre la fin de la tâche
+startServer().then(() => {
+  console.log('Démarrage du serveur terminé avec succès');
+}).catch((error) => {
+  console.error('Erreur dans le démarrage du serveur:', error);
+});
