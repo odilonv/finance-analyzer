@@ -7,7 +7,7 @@
   "main": "Server.js",
   "scripts": {
     "start": "node Server.js",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
