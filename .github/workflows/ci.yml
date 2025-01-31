@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - master
-      - "release/*"
   pull_request:
     branches:
       - master
+  release:
+    types:
+      - published
 
 jobs:
   # Job de test
@@ -29,33 +31,70 @@ jobs:
         run: npm test
         continue-on-error: false # Ne continue que si les tests passent
 
+  # Job de build et d'édition de Docker pour le Frontend et Backend
   build:
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'release'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set Docker tag based on event
+        id: docker_tag
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'release' ]]; then
+            echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          elif [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            echo "DOCKER_TAG=pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "DOCKER_TAG=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Build Docker image for Frontend
         run: |
-          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend
-          docker tag finance-analyzer-frontend:${{ github.sha }} finance-analyzer-frontend:latest
+          docker build -f ./frontend/Dockerfile -t odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./frontend
+          docker tag odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-frontend:latest
 
       - name: Build Docker image for Backend
         run: |
-          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend
-          docker tag finance-analyzer-backend:${{ github.sha }} finance-analyzer-backend:latest
+          docker build -f ./backend/Dockerfile -t odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./backend
+          docker tag odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-backend:latest
 
-  # Job de publication de Docker Image (en fonction de la release)
+      - name: Save Docker images
+        run: |
+          docker save odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o frontend-image.tar
+          docker save odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o backend-image.tar
+
+      - name: Upload Docker images as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-images
+          path: |
+            frontend-image.tar
+            backend-image.tar
+
+  # Job de publication de Docker Image (en fonction de la release ou PR)
   publish:
     runs-on: ubuntu-latest
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'release' || github.event_name == 'pull_request'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Download Docker images
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-images
+          path: ./docker-images
+
+      - name: Load Docker images
+        run: |
+          docker load -i ./docker-images/frontend-image.tar
+          docker load -i ./docker-images/backend-image.tar
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -63,14 +102,34 @@ jobs:
           username: odilonvidal
           password: dckr_pat__EdkCVzcQiRMXXbrAjmOSesxPXA
 
+      - name: Set Docker tag based on event
+        id: docker_tag
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'release' ]]; then
+            echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          elif [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            echo "DOCKER_TAG=pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "DOCKER_TAG=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug Docker tag
+        run: echo "Docker tag is ${{ steps.docker_tag.outputs.DOCKER_TAG }}"
+
+      # Tag explicitement latest avant le push
+      - name: Tag latest
+        run: |
+          docker tag odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-frontend:latest
+          docker tag odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-backend:latest
+
       # Push Docker image du frontend
       - name: Push Docker image for Frontend
         run: |
-          docker push finance-analyzer-frontend:${{ github.sha }}
-          docker push finance-analyzer-frontend:latest
+          docker push odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
+          docker push odilonvidal/finance-analyzer-frontend:latest
 
       # Push Docker image du backend
       - name: Push Docker image for Backend
         run: |
-          docker push finance-analyzer-backend:${{ github.sha }}
-          docker push finance-analyzer-backend:latest
+          docker push odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
+          docker push odilonvidal/finance-analyzer-backend:latest
