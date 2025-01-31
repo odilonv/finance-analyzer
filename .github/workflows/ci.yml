@@ -26,15 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Docker Compose
-        run: |
-          sudo apt update
-          sudo apt install -y docker-compose
-
       - name: Run tests
-        run: |
-          npm run server
-          npm test
+        run: npm test
         continue-on-error: false # Ne continue que si les tests passent
 
   # Job de build et d'édition de Docker
