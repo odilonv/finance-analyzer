@@ -5,7 +5,7 @@ describe('Stock Routes', () => {
     test('GET /stocks should return stock list', async () => {
         const response = await request(app).get('/stocks');
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('data'); // Vérifie si l'objet contient des données
+        expect(response.body).toHaveProperty('data'); 
     });
 
     test('GET /stocks/:symbol should return stock details', async () => {
@@ -21,7 +21,7 @@ describe('Stock Routes', () => {
         const symbol = 'AAPL';
         const response = await request(app).get(`/stocks/${symbol}/history?interval=1day&start_date=2024-01-01&end_date=2024-01-10`);
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('values'); // Vérifie si l'historique est retourné
+        expect(response.body).toHaveProperty('values');
     });
 
     test('GET /stocks/:symbol with invalid symbol should return an error', async () => {

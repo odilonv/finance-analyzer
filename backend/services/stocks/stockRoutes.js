@@ -13,7 +13,7 @@ stockRouter.get('/', async (req, res) => {
             throw new Error(`API call failed with status ${response.status}`);
         }
         const data = await response.json();
-        res.json(data); // Envoyer les données de l'API comme réponse
+        res.json(data); 
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
@@ -54,7 +54,7 @@ stockRouter.get('/:symbol/history', async (req, res) => {
             throw new Error(`API call failed with status ${response.status}`);
         }
         const data = await response.json();
-        res.json(data); // Envoyer les données de l'API comme réponse
+        res.json(data);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
