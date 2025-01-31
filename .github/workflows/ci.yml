@@ -26,13 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Docker Compose
-        run: |
-          sudo apt update
-          sudo apt install -y docker-compose
+      # - name: Install Docker Compose
+      #   run: |
+      #     sudo apt update
+      #     sudo apt install -y docker-compose
 
-      - name: Run Server
-        run: npm run server
+      # - name: Run Server
+      #   run: npm run server
 
       - name: Run tests
         run: npm test
