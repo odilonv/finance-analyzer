@@ -113,6 +113,15 @@ jobs:
             echo "DOCKER_TAG=${{ github.sha }}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Debug Docker tag
+        run: echo "Docker tag is ${{ steps.docker_tag.outputs.DOCKER_TAG }}"
+
+      # Tag explicitement latest avant le push
+      - name: Tag latest
+        run: |
+          docker tag odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-frontend:latest
+          docker tag odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-backend:latest
+
       # Push Docker image du frontend
       - name: Push Docker image for Frontend
         run: |
