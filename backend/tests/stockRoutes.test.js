@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import cors from 'cors';
-import { stockRouter } from '../routes/stocks.js'; // Assure-toi que le chemin est correct
+import { stockRouter } from '../services/stocks/stockRoutes.js';
 
 const app = express();
 app.use(cors({
@@ -38,4 +38,3 @@ describe('Stock Routes', () => {
         expect(response.body).toHaveProperty('message', 'Stock not found');
     });
 });
-    
