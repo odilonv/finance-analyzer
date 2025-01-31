@@ -20,10 +20,12 @@ export const UserService = {
             [newUser.firstName, newUser.lastName, newUser.email, newUser.password]
         );
 
-        const [rows] = await connection.query('SELECT LAST_INSERT_ID() as id');
-        newUser.id = rows[0].id;
-
-        return newUser;
+        const result = await connection.query('SELECT LAST_INSERT_ID() as id');
+        if (result && result.length > 0) {
+            newUser.id = result[0].id;
+        } else {
+        throw new Error("Failed to retrieve last inserted ID");
+        }
     },
 
     loginUser: async (email, password) => {

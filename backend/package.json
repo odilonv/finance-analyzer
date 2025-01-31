@@ -3,7 +3,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "workspaces": {},
+  "workspaces": [],
   "main": "Server.js",
   "scripts": {
     "start": "node Server.js",
