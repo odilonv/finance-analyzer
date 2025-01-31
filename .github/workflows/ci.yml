@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - master
-      - "release/*"
   pull_request:
     branches:
       - master
+  release:
+    types:
+      - published
 
 jobs:
   # Job de test
@@ -33,10 +35,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'release'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set Docker tag based on event
+        id: docker_tag
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'release' ]]; then
+            echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          elif [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            echo "DOCKER_TAG=pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "DOCKER_TAG=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Build Docker image for Frontend
         run: |
@@ -48,11 +62,11 @@ jobs:
           docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend
           docker tag finance-analyzer-backend:${{ github.sha }} finance-analyzer-backend:latest
 
-  # Job de publication de Docker Image (en fonction de la release)
+  # Job de publication de Docker Image (en fonction de la release ou PR)
   publish:
     runs-on: ubuntu-latest
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'release' || github.event_name == 'pull_request'
 
     steps:
       - name: Checkout code
@@ -63,6 +77,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set Docker tag based on event
+        id: docker_tag
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'release' ]]; then
+            echo "DOCKER_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          elif [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            echo "DOCKER_TAG=pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "DOCKER_TAG=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
 
       # Push Docker image du frontend
       - name: Push Docker image for Frontend
