@@ -13,7 +13,7 @@
     "client": "cd frontend && npm start",
     "server": "node start-server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "concurrently \"npm run test --workspace frontend\" \"npm run test --workspace backend\"",
+    "test": "concurrently \"npm run test --workspace frontend -- --passWithNoTests\" \"npm run test --workspace backend\"",
     "database": "node start-server.js"
   },
   "author": "ESCLAPEZ Loïc, DIMECK Raphaël, VIDAL Odilon",
