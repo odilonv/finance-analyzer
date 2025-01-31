@@ -1,19 +1,7 @@
-name: CI Pipeline
-
-on:
-  push:
-    branches:
-      - master
-      - "release/*"
-  pull_request:
-    branches:
-      - master
-
 jobs:
   # Job de test
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +18,7 @@ jobs:
         run: npm test
         continue-on-error: false # Ne continue que si les tests passent
 
-  # Job de build et d'édition de Docker
+  # Job de build et d'édition de Docker pour le Frontend et Backend
   build:
     runs-on: ubuntu-latest
     needs: test
@@ -39,16 +27,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker image
+      # Build Docker image pour le frontend
+      - name: Build Docker image for Frontend
         run: |
-          docker build -t finance-analyzer:${{ github.sha }} .
+          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend
+          docker tag finance-analyzer-frontend:${{ github.sha }} finance-analyzer-frontend:latest
 
-      - name: Tag Docker image with commit SHA
+      # Build Docker image pour le backend
+      - name: Build Docker image for Backend
         run: |
-          docker tag finance-analyzer:${{ github.sha }} finance-analyzer:latest
+          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend
+          docker tag finance-analyzer-backend:${{ github.sha }} finance-analyzer-backend:latest
 
   # Job de publication de Docker Image (en fonction de la release)
   publish:
@@ -66,7 +55,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker image
+      # Push Docker image du frontend
+      - name: Push Docker image for Frontend
         run: |
-          docker push finance-analyzer:${{ github.sha }}
-          docker push finance-analyzer:latest
+          docker push finance-analyzer-frontend:${{ github.sha }}
+          docker push finance-analyzer-frontend:latest
+
+      # Push Docker image du backend
+      - name: Push Docker image for Backend
+        run: |
+          docker push finance-analyzer-backend:${{ github.sha }}
+          docker push finance-analyzer-backend:latest
