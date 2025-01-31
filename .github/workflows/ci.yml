@@ -40,11 +40,12 @@ jobs:
 
       - name: Build Docker image for Frontend
         run: |
-          docker buildx build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend --push
+          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend
+          docker tag finance-analyzer-frontend:${{ github.sha }} finance-analyzer-frontend:latest
 
       - name: Build Docker image for Backend
         run: |
-          docker buildx build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend --push
+          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend
           docker tag finance-analyzer-backend:${{ github.sha }} finance-analyzer-backend:latest
 
   # Job de publication de Docker Image (en fonction de la release)
