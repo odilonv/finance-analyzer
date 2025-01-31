@@ -54,18 +54,18 @@ jobs:
 
       - name: Build Docker image for Frontend
         run: |
-          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./frontend
-          docker tag finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} finance-analyzer-frontend:latest
+          docker build -f ./frontend/Dockerfile -t odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./frontend
+          docker tag odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-frontend:latest
 
       - name: Build Docker image for Backend
         run: |
-          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./backend
-          docker tag finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} finance-analyzer-backend:latest
+          docker build -f ./backend/Dockerfile -t odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./backend
+          docker tag odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} odilonvidal/finance-analyzer-backend:latest
 
       - name: Save Docker images
         run: |
-          docker save finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o frontend-image.tar
-          docker save finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o backend-image.tar
+          docker save odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o frontend-image.tar
+          docker save odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o backend-image.tar
 
       - name: Upload Docker images as artifacts
         uses: actions/upload-artifact@v4
@@ -116,11 +116,11 @@ jobs:
       # Push Docker image du frontend
       - name: Push Docker image for Frontend
         run: |
-          docker push finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
-          docker push finance-analyzer-frontend:latest
+          docker push odilonvidal/finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
+          docker push odilonvidal/finance-analyzer-frontend:latest
 
       # Push Docker image du backend
       - name: Push Docker image for Backend
         run: |
-          docker push finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
-          docker push finance-analyzer-backend:latest
+          docker push odilonvidal/finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
+          docker push odilonvidal/finance-analyzer-backend:latest
