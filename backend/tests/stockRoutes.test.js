@@ -1,29 +1,9 @@
-import dotenv from 'dotenv';
-import path from 'path';
-
-const envPath = path.resolve('./.env');
-console.log("Tentative de chargement du fichier .env depuis :", envPath);
-
-dotenv.config({ path: envPath });
-
-console.log("Valeur de API_KEY après dotenv.config() :", process.env.API_KEY);
-
-import express from 'express';
+import app from '../Server.js';
 import request from 'supertest';
 
-import { stockRouter } from '../services/stocks/stockRoutes';
-
 describe('Stock Routes', () => {
-    let app;
-
-    beforeAll(() => {
-        app = express();
-        app.use(express.json());
-        app.use('/stocks', stockRouter);
-    });
-
     test('GET /stocks should return stock list', async () => {
-        const response = await request(app).get('/');
+        const response = await request(app).get('/stocks');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('data'); // Vérifie si l'objet contient des données
     });
@@ -31,6 +11,8 @@ describe('Stock Routes', () => {
     test('GET /stocks/:symbol should return stock details', async () => {
         const symbol = 'AAPL';
         const response = await request(app).get(`/stocks/${symbol}`);
+        console.log(response.body);
+        
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('symbol', symbol);
     });

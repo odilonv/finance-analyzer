@@ -1,15 +1,10 @@
 import express from 'express';
 import fetch from 'node-fetch';
-import dotenv from 'dotenv';
-import path from 'path';
-
-dotenv.config({ path: path.resolve('./backend/.env') });
+import config from '../../config/config.js';
 
 export const newsRouter = express.Router();
 
-const YAHOO_API_KEY = process.env.YAHOO_API_KEY;
-console.log("API_KEY dans newsRoute:", YAHOO_API_KEY);
-
+const YAHOO_API_KEY = config.YAHOO_API_KEY;
 
 newsRouter.get('/', async (req, res) => {
   // Liste des tickers d'actions pour lesquelles tu veux récupérer les news
