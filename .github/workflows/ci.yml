@@ -31,7 +31,6 @@ jobs:
         run: npm test
         continue-on-error: false # Ne continue que si les tests passent
 
-  # Job de build et d'édition de Docker pour le Frontend et Backend
   build:
     runs-on: ubuntu-latest
     needs: test
