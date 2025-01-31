@@ -54,13 +54,13 @@ jobs:
 
       - name: Build Docker image for Frontend
         run: |
-          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend
-          docker tag finance-analyzer-frontend:${{ github.sha }} finance-analyzer-frontend:latest
+          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./frontend
+          docker tag finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} finance-analyzer-frontend:latest
 
       - name: Build Docker image for Backend
         run: |
-          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend
-          docker tag finance-analyzer-backend:${{ github.sha }} finance-analyzer-backend:latest
+          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./backend
+          docker tag finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} finance-analyzer-backend:latest
 
   # Job de publication de Docker Image (en fonction de la release ou PR)
   publish:
@@ -92,11 +92,11 @@ jobs:
       # Push Docker image du frontend
       - name: Push Docker image for Frontend
         run: |
-          docker push finance-analyzer-frontend:${{ github.sha }}
+          docker push finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
           docker push finance-analyzer-frontend:latest
 
       # Push Docker image du backend
       - name: Push Docker image for Backend
         run: |
-          docker push finance-analyzer-backend:${{ github.sha }}
+          docker push finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }}
           docker push finance-analyzer-backend:latest
