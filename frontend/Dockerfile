@@ -13,7 +13,7 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=builder /finance-analyzer/dist /usr/share/nginx/html
+COPY --from=builder /finance-analyzer/build /usr/share/nginx/html
 
 EXPOSE 80
 

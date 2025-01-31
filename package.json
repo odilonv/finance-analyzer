@@ -14,7 +14,8 @@
     "server": "node start-server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "concurrently \"npm run test --workspace frontend -- --passWithNoTests\" \"npm run test --workspace backend\"",
-    "database": "node start-server.js"
+    "database": "node start-server.js",
+    "build": "concurrently \"npm tun build --workspace frontend -- --passWithNoTests\" \"npm run build --workspace backend\""
   },
   "author": "ESCLAPEZ Loïc, DIMECK Raphaël, VIDAL Odilon",
   "license": "MIT License",
