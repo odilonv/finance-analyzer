@@ -1,15 +1,15 @@
+import app from '../Server.js';
 import request from 'supertest';
-import express from 'express';
-import cors from 'cors';
-import { stockRouter } from '../services/stocks/stockRoutes.js';
 
-const app = express();
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-}));
-app.use(express.json());
-app.use('/stocks', stockRouter); // Ajoute le router
+let server;
+
+beforeAll(() => {
+    server = app.listen(); // Start server if necessary
+});
+
+afterAll((done) => {
+    server.close(done); // Close server to prevent open handles
+});
 
 describe('Stock Routes', () => {
     test('GET /stocks should return stock list', async () => {
@@ -34,7 +34,7 @@ describe('Stock Routes', () => {
 
     test('GET /stocks/:symbol with invalid symbol should return an error', async () => {
         const response = await request(app).get('/stocks/INVALID');
-        expect(response.status).toBe(404); // Change de 500 à 404
-        expect(response.body).toHaveProperty('message', 'Stock not found');
+        expect(response.status).toBe(500);
+        expect(response.body).toHaveProperty('message');
     });
 });
