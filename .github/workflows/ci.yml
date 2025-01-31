@@ -31,11 +31,10 @@ jobs:
           sudo apt update
           sudo apt install -y docker-compose
 
-      - name: Run Server
-        run: npm run server
-
       - name: Run tests
-        run: npm test
+        run: |
+          npm run server
+          npm test
         continue-on-error: false # Ne continue que si les tests passent
 
   # Job de build et d'édition de Docker
