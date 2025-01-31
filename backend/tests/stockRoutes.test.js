@@ -1,15 +1,15 @@
-import app from '../Server.js';
 import request from 'supertest';
+import express from 'express';
+import cors from 'cors';
+import { stockRouter } from '../services/stocks/stockRoutes.js';
 
-let server;
-
-beforeAll(() => {
-    server = app.listen(); // Start server if necessary
-});
-
-afterAll((done) => {
-    server.close(done); // Close server to prevent open handles
-});
+const app = express();
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+app.use(express.json());
+app.use('/stocks', stockRouter); // Ajoute le router
 
 describe('Stock Routes', () => {
     test('GET /stocks should return stock list', async () => {
