@@ -52,7 +52,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t finance-analyzer:${{ github.sha }} .
+          docker build -t finance-analyzer:${{ github.sha }} -f backend/Dockerfile .
 
       - name: Tag Docker image with commit SHA
         run: |
