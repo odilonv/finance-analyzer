@@ -34,7 +34,7 @@ describe('Stock Routes', () => {
 
     test('GET /stocks/:symbol with invalid symbol should return an error', async () => {
         const response = await request(app).get('/stocks/INVALID');
-        expect(response.status).toBe(500);
+        expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('message');
     });
 });
