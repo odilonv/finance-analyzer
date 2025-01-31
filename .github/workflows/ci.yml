@@ -40,7 +40,7 @@ jobs:
 
       - name: Build Docker image for Frontend
         run: |
-          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend
+          docker buildx build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend --push
           docker tag finance-analyzer-frontend:${{ github.sha }} finance-analyzer-frontend:latest
 
       - name: Build Docker image for Backend
