@@ -40,9 +40,6 @@ const startServer = async () => {
       throw new Error('Le conteneur MySQL n\'a pas été trouvé');
     }
 
-    console.log('Configuration de MySQL...');
-    await execCommand(`docker exec -i ${containerId} mysql -u root -padmin -e "SET GLOBAL log_bin_trust_function_creators = 1;"`);
-
     console.log('Le serveur est en cours d\'exécution.');
 
     // Attendre que le processus du serveur se termine (facultatif)
