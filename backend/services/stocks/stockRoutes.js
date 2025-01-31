@@ -32,7 +32,7 @@ stockRouter.get('/:symbol', async (req, res) => {
         const data = await response.json();
 
         if (data.code === 404) {
-            res.status(500).json({ message: 'Stock not found' });
+            res.status(404).json({ message: 'Stock not found' });
             return;
         }
 
