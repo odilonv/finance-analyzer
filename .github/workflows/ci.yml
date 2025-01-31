@@ -31,6 +31,7 @@ jobs:
         run: npm test
         continue-on-error: false # Ne continue que si les tests passent
 
+  # Job de build et d'édition de Docker pour le Frontend et Backend
   build:
     runs-on: ubuntu-latest
     needs: test
@@ -61,6 +62,19 @@ jobs:
           docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} ./backend
           docker tag finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} finance-analyzer-backend:latest
 
+      - name: Save Docker images
+        run: |
+          docker save finance-analyzer-frontend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o frontend-image.tar
+          docker save finance-analyzer-backend:${{ steps.docker_tag.outputs.DOCKER_TAG }} -o backend-image.tar
+
+      - name: Upload Docker images as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-images
+          path: |
+            frontend-image.tar
+            backend-image.tar
+
   # Job de publication de Docker Image (en fonction de la release ou PR)
   publish:
     runs-on: ubuntu-latest
@@ -71,11 +85,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Download Docker images
+        uses: actions/download-artifact@v3
+        with:
+          name: docker-images
+          path: ./docker-images
+
+      - name: Load Docker images
+        run: |
+          docker load -i ./docker-images/frontend-image.tar
+          docker load -i ./docker-images/backend-image.tar
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: odilonvidal
-          password: dckr_pat__EdkCVzcQiRMXXbrAjmOSesxPXA
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Set Docker tag based on event
         id: docker_tag
