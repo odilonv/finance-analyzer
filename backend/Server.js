@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({ path: path.resolve('./backend/.env') });
+dotenv.config({ path: path.resolve('../.env') });
 console.log("API_KEY après chargement :", process.env.API_KEY);
 
 import express from 'express';

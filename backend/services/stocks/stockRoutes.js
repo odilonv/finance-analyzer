@@ -11,6 +11,8 @@ import express from 'express';
 export const stockRouter = express.Router();
 
 stockRouter.get('/', async (req, res) => {
+    console.log("API_KEY dans stockRoutes GET /:", API_KEY);
+    
     try {
         const response = await fetch(`https://api.twelvedata.com/stocks?apikey=${API_KEY}`);
         if (!response.ok) {
