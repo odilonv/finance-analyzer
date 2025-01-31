@@ -29,10 +29,6 @@ node_modules/
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
 
-# Ignore les fichiers d'installation et les dépendances spécifiques à votre système d'exploitation
-package-lock.json
-**/package-lock.json
-
 # Ignore les fichiers de cache
 .cache/
 
