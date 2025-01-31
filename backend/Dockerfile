@@ -9,7 +9,7 @@ COPY backend/package*.json ./
 
 RUN npm install --only=production
 
-COPY backend . 
+COPY . . 
 
 FROM node:18-alpine
 
