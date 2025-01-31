@@ -38,16 +38,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Build Docker image pour le frontend
       - name: Build Docker image for Frontend
         run: |
-          docker build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend .
-          docker tag finance-analyzer-frontend:${{ github.sha }} finance-analyzer-frontend:latest
+          docker buildx build -f ./frontend/Dockerfile -t finance-analyzer-frontend:${{ github.sha }} ./frontend --push
 
-      # Build Docker image pour le backend
+
       - name: Build Docker image for Backend
         run: |
-          docker build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend .
+          docker buildx build -f ./backend/Dockerfile -t finance-analyzer-backend:${{ github.sha }} ./backend --push
           docker tag finance-analyzer-backend:${{ github.sha }} finance-analyzer-backend:latest
 
   # Job de publication de Docker Image (en fonction de la release)
